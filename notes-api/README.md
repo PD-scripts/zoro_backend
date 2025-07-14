@@ -30,19 +30,19 @@ Create a `.env` file in the backend directory:
 ```env
 PORT=5000
 
-# MongoDB Atlas Connection String
-# Replace with your actual connection string from MongoDB Atlas
-# Make sure to:
-# 1. Replace <username> and <password> with your database user credentials
-# 2. Replace YOUR_DATABASE_NAME with your chosen database name
-MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/YOUR_DATABASE_NAME?retryWrites=true&w=majority
+# Local MongoDB (uncomment if using local instance)
+# MONGO_URI=mongodb://localhost:27017/notes-app
+
+# MongoDB Atlas (recommended - replace with your connection string)
+MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/notes-app?retryWrites=true&w=majority
 
 JWT_SECRET=your_super_secret_jwt_key_here_make_it_long_and_random
 NODE_ENV=development
 ```
 
 ### 4. Database Setup
-Follow the **MongoDB Atlas Setup** section below to configure your cloud database.
+- **Recommended**: Use [MongoDB Atlas](https://www.mongodb.com/atlas) for cloud database
+- **Alternative**: Install and run MongoDB locally
 
 ### 5. Start the Application
 
@@ -60,39 +60,133 @@ npm run dev
 ```
 The server will start on [http://localhost:5000](http://localhost:5000)
 
-## 🗄️ MongoDB Atlas Setup
+## 📚 API Documentation
 
-### Step 1: Create MongoDB Atlas Account
-1. Visit [MongoDB Atlas](https://www.mongodb.com/atlas)
-2. Sign up for a free account
-3. Create a new cluster (choose the free tier)
-
-### Step 2: Database Access
-1. Go to **Database Access** in the left sidebar
-2. Click **Add New Database User**
-
-### Step 3: Network Access
-1. Go to **Network Access** in the left sidebar
-2. Click **Add IP Address**
-3. Choose **Allow Access from Anywhere** (0.0.0.0/0) for development
-4. For production, add your specific IP addresses
-
-### Step 4: Get Connection String
-1. Go to **Clusters** and click **Connect**
-2. Choose **Connect your application**
-3. Copy the connection string
-4. Replace `<password>` with your database user password
-5. **Important**: Add your database name after the `/` in the URL
-
-**Example Connection String:**
+### Base URL
 ```
-mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/YOUR_DATABASE_NAME?retryWrites=true&w=majority
+http://localhost:5000/api
 ```
 
-### Step 5: Configure Environment Variables
-Update your `.env` file with your Atlas connection string:
+### 🔐 Authentication Endpoints
 
+#### Register User
+```http
+POST /api/auth/register
+Content-Type: application/json
+```
 
+**Request Body:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+#### Login User
+```http
+POST /api/auth/login
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+```
+
+#### Get User Profile
+```http
+GET /api/auth/me
+Authorization: Bearer <jwt_token>
+```
+
+### 📋 Notes Endpoints
+
+#### Get All Notes
+```http
+GET /api/notes
+Authorization: Bearer <jwt_token>
+```
+
+#### Create Note
+```http
+POST /api/notes
+Authorization: Bearer <jwt_token>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "title": "My First Note",
+  "content": "This is the content of my note"
+}
+```
+
+#### Update Note
+```http
+PUT /api/notes/:id
+Authorization: Bearer <jwt_token>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "title": "Updated Note Title",
+  "content": "Updated content"
+}
+```
+
+#### Delete Note
+```http
+DELETE /api/notes/:id
+Authorization: Bearer <jwt_token>
+```
+
+## 🔧 Example Usage
+
+### 1. Register a New User
+```bash
+curl -X POST http://localhost:5000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+### 2. Login
+```bash
+curl -X POST http://localhost:5000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "john@example.com",
+    "password": "password123"
+  }'
+```
+
+### 3. Create a Note
+```bash
+curl -X POST http://localhost:5000/api/notes \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+  -d '{
+    "title": "My First Note",
+    "content": "This is my first note content"
+  }'
+```
+
+### 4. Get All Notes
+```bash
+curl -X GET http://localhost:5000/api/notes \
+  -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
 
 ## 📁 Project Structure
 
