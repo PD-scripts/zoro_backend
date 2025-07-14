@@ -3,6 +3,11 @@
 A robust RESTful API for a note-taking application built with modern technologies including Node.js, Express, MongoDB, and JWT authentication.
 
 ## ✨ Features
+ <img width="414" height="557" alt="image" src="https://github.com/user-attachments/assets/79d8daf9-93b6-442a-b05c-02dcdf376db1" /> <img width="405" height="557" alt="image" src="https://github.com/user-attachments/assets/81d486bd-5135-454d-a83d-d966d8b91e7a" /> <img width="823" height="614" alt="image" src="https://github.com/user-attachments/assets/e4d8f25a-5484-40c5-a854-820dff1b7a12" />
+
+
+
+
 
 - 🔐 **User Authentication** - Secure registration and login system
 - 🎫 **JWT Authorization** - Token-based authentication
@@ -34,7 +39,7 @@ PORT=5000
 # MONGO_URI=mongodb://localhost:27017/notes-app
 
 # MongoDB Atlas (recommended - replace with your connection string)
-MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/notes-app?retryWrites=true&w=majority
+# MONGO_URI=mongodb+srv://username:password@cluster0.xxxxx.mongodb.net/notes-app?retryWrites=true&w=majority
 
 JWT_SECRET=your_super_secret_jwt_key_here_make_it_long_and_random
 NODE_ENV=development
