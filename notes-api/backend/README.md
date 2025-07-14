@@ -40,6 +40,11 @@ JWT_SECRET=your_super_secret_jwt_key_here_make_it_long_and_random
 NODE_ENV=development
 ```
 
+**⚠️ Important Database Configuration:**
+- **For Local MongoDB**: Uncomment the local MongoDB URI line and comment out the Atlas URI
+- **For MongoDB Atlas**: Uncomment the Atlas URI line and replace it with your own connection string from MongoDB Atlas
+- **Replace the database URL with your own**: Make sure to update the connection string with your actual database credentials and cluster information
+
 ### 4. Database Setup
 - **Recommended**: Use [MongoDB Atlas](https://www.mongodb.com/atlas) for cloud database
 - **Alternative**: Install and run MongoDB locally
@@ -186,6 +191,80 @@ curl -X POST http://localhost:5000/api/notes \
 ```bash
 curl -X GET http://localhost:5000/api/notes \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
+```
+
+## 🌐 Frontend Integration
+
+The frontend uses JavaScript fetch API to communicate with the backend. Here's how to make requests:
+
+### Register User (Frontend)
+```javascript
+fetch('http://localhost:5000/api/auth/register', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    name: 'John Doe',
+    email: 'john@example.com',
+    password: '123456'
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));
+```
+
+### Login User (Frontend)
+```javascript
+fetch('http://localhost:5000/api/auth/login', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    email: 'john@example.com',
+    password: '123456'
+  })
+})
+.then(response => response.json())
+.then(data => {
+  console.log(data);
+  // Store the token for future requests
+  localStorage.setItem('token', data.token);
+});
+```
+
+### Create Note (Frontend)
+```javascript
+const token = localStorage.getItem('token');
+
+fetch('http://localhost:5000/api/notes', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`
+  },
+  body: JSON.stringify({
+    title: 'My First Note',
+    content: 'This is my first note content'
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));
+```
+
+### Get All Notes (Frontend)
+```javascript
+const token = localStorage.getItem('token');
+
+fetch('http://localhost:5000/api/notes', {
+  method: 'GET',
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+})
+.then(response => response.json())
+.then(data => console.log(data));
 ```
 
 ## 📁 Project Structure
